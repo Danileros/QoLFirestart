@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <Nullable>disable</Nullable>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <RootNamespace>FireStartQoL</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TheLongDarkPath>C:\Program Files (x86)\Steam\steamapps\common\TheLongDark</TheLongDarkPath>
+        <MelonLoaderPath>$(TheLongDarkPath)\MelonLoader\net6</MelonLoaderPath>
+        <ManagedPath>$(TheLongDarkPath)\MelonLoader\Managed</ManagedPath>
+        <Il2CppPath>$(TheLongDarkPath)\MelonLoader\Il2CppAssemblies</Il2CppPath>
+        <ModsPath>$(TheLongDarkPath)\Mods</ModsPath>
+        <AssemblySearchPaths>$(AssemblySearchPaths);$(MelonLoaderPath);$(ManagedPath);$(Il2CppPath);$(ModsPath);</AssemblySearchPaths>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="Il2CppAk.Wwise.Api.WAAPI" />
+        <Reference Include="Il2CppAK.Wwise.Unity.API" />
+        <Reference Include="Il2CppAK.Wwise.Unity.API.WwiseTypes" />
+        <Reference Include="Il2CppAK.Wwise.Unity.API.WwiseTypes.Common" />
+        <Reference Include="Il2CppAK.Wwise.Unity.MonoBehaviour" />
+        <Reference Include="Il2CppTLD.SaveState" />
+        <Reference Include="Il2CppTLD.IntBackedUnit" />
+        <Reference Include="MelonLoader" />
+        <Reference Include="0Harmony" />
+        <Reference Include="Il2CppInterop.Common" />
+        <Reference Include="Il2CppInterop.Runtime" />
+        <Reference Include="Assembly-CSharp-firstpass" />
+        <Reference Include="Assembly-CSharp" />
+        <Reference Include="Il2CppMono.Security" />
+        <Reference Include="Il2Cppmscorlib" />
+        <Reference Include="Il2CppSystem.Configuration" />
+        <Reference Include="Il2CppSystem.Core" />
+        <Reference Include="Il2CppSystem.Data" />
+        <Reference Include="Il2CppSystem" />
+        <Reference Include="AudioManager" />
+        <Reference Include="ModSettings" />
+        <Reference Include="UnityEngine.AnimationModule" />
+        <Reference Include="UnityEngine.AssetBundleModule" />
+        <Reference Include="UnityEngine.AudioModule" />
+        <Reference Include="UnityEngine" />
+        <Reference Include="UnityEngine.CoreModule" />
+        <Reference Include="UnityEngine.DSPGraphModule" />
+        <Reference Include="UnityEngine.InputLegacyModule" />
+        <Reference Include="UnityEngine.InputModule" />
+        <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule" />
+        <Reference Include="UnityEngine.SharedInternalsModule" />
+        <Reference Include="UnityEngine.StreamingModule" />
+        <Reference Include="UnityEngine.SubsystemsModule" />
+        <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule" />
+        <Reference Include="UnityEngine.UnityWebRequestAudioModule" />
+        <Reference Include="UnityEngine.UnityWebRequestModule" />
+        <Reference Include="UnityEngine.UnityWebRequestTextureModule" />
+        <Reference Include="UnityEngine.UnityWebRequestWWWModule" />
+        <Reference Include="UnityEngine.Il2CppAssetBundleManager" />
+        <Reference Include="UnityEngine.Il2CppImageConversionManager" />
+    </ItemGroup>
+    
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Debug\net6\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
+    </Target>
+</Project>

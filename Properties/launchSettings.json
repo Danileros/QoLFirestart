@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "QoLFireStart": {
+      "commandName": "Executable",
+      "executablePath": "$(TheLongDarkPath)/tld.exe",
+      "workingDirectory": "$(TheLongDarkPath)"
+    }
+  }
+}
