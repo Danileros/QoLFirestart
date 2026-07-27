@@ -1,5 +1,7 @@
 # QoL FireStart
 
+![Screenshot](logo.png)
+
 A MelonLoader mod for **The Long Dark** survival mode.
 
 QoL FireStart is a mod that makes fire starting process a little simpler by choosing best gear instead of ordering by name.
