@@ -86,8 +86,10 @@ internal class Panel_FireStart_Patches
                 var fuelDuration = gear.m_FuelSourceItem?.m_BurnDurationHours.ToString("N2");
                 var fuelQuality = (gear.m_FuelSourceItem?.m_BurnDurationHours ?? 0) / (gear.WeightKG.m_Units/ 1000000000f);
                 
+                var condition = gear.CurrentHP;
+                
                 MelonLoader.MelonLogger.Msg(
-                    $"{gear.name}/{gear.DisplayName}: {starterTime}, {starterChance}% / {fuelTime}, {fuelChance}% / {weight}g, {fuelDuration}h, {fuelQuality}");
+                    $"{gear.name}/{gear.DisplayName}: {starterTime}, {starterChance}% / {fuelTime}, {fuelChance}% / {weight}g, {condition}, {fuelDuration}h, {fuelQuality}");
             }
             
             MelonLoader.MelonLogger.Msg($"");
@@ -176,23 +178,30 @@ internal class Panel_FireStart_Patches
             {
                 return 1;
             }
+            
+            var aIncomplete = (a.m_ResearchItem != null && !a.m_ResearchItem.IsResearchComplete());
+            var bIncomplete = (b.m_ResearchItem != null && !b.m_ResearchItem.IsResearchComplete());
+            if (aIncomplete != bIncomplete)
+            {
+                return aIncomplete ? 1 : -1;
+            }
 
             var aChance = (int)a.m_FuelSourceItem.m_FireStartSkillModifier;
             var aTime = -(int)a.m_FuelSourceItem.m_FireStartDurationModifier;
-            var aIncomplete = (a.m_ResearchItem != null && !a.m_ResearchItem.IsResearchComplete()) ? 1 : 0;
-            var aQuality = (int)(10 * a.m_FuelSourceItem.m_BurnDurationHours / (a.WeightKG.m_Units/ 1000000000f));
+            var aRatio = (int)(10 * a.m_FuelSourceItem.m_BurnDurationHours / (a.WeightKG.m_Units/ 1000000000f));
             var aWorst = WorstFuels.Contains(a.name) ? 1 : 0;
+            var aCondition = (int)a.CurrentHP;
             
             var bChance = (int)b.m_FuelSourceItem.m_FireStartSkillModifier;
             var bTime = -(int)b.m_FuelSourceItem.m_FireStartDurationModifier;
-            var bIncomplete = (b.m_ResearchItem != null && !b.m_ResearchItem.IsResearchComplete()) ? 1 : 0; 
-            var bQuality = (int)(10 * b.m_FuelSourceItem.m_BurnDurationHours / (b.WeightKG.m_Units/ 1000000000f));
+            var bRatio = (int)(10 * b.m_FuelSourceItem.m_BurnDurationHours / (b.WeightKG.m_Units/ 1000000000f));
             var bWorst = WorstFuels.Contains(b.name) ? 1 : 0;
-            return (aIncomplete - bIncomplete) * 100000000  // Sort out incomplete research book
-                   + (bChance - aChance) * 1000000          // Prefer best chance
-                   + (bTime - aTime) * 10000                // Then best start duration
-                   + (aWorst - bWorst) * 100                // Then sort out torch
-                   + (aQuality - bQuality);                 // Then lowest quality (stick over cedar wood)
+            var bCondition = (int)b.CurrentHP;
+            return (bChance - aChance) * 10000000           // Prefer best chance
+                   + (bTime - aTime) * 100000               // Then best start duration
+                   + (aWorst - bWorst) * 10000              // Then sort out torch
+                   + (aCondition - bCondition) * 100        // Then by condition (torch)
+                   + (aRatio - bRatio);                     // Then lowest quality (stick over cedar wood)
         }
     }
 }
