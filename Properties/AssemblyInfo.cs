@@ -13,7 +13,7 @@ using BuildInfo = QoLFireStart.BuildInfo;
 [assembly: AssemblyVersion(BuildInfo.Version)]
 [assembly: AssemblyFileVersion(BuildInfo.Version)]
 
-[assembly: MelonInfo(typeof(QoLFireStart.QoLFireStartMain), BuildInfo.Name, BuildInfo.Version, BuildInfo.Author, BuildInfo.DownloadLink)]
+[assembly: MelonInfo(typeof(QoLFireStart.Main), BuildInfo.Name, BuildInfo.Version, BuildInfo.Author, BuildInfo.DownloadLink)]
 [assembly: MelonGame("Hinterland", "TheLongDark")]
 
 [assembly: VerifyLoaderVersion(BuildInfo.MelonLoaderVersion, true)]
