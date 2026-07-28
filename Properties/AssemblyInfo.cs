@@ -1,12 +1,21 @@
 ﻿using System.Reflection;
 using MelonLoader;
+using BuildInfo = QoLFireStart.BuildInfo;
 
-[assembly: AssemblyTitle("QoLFireStart")]
-[assembly: AssemblyDescription("A MelonLoader mod for The Long Dark survival mode")]
-[assembly: AssemblyCopyright("Danileros © 2026")]
+[assembly: AssemblyTitle(BuildInfo.Name)]
+[assembly: AssemblyDescription(BuildInfo.Description)]
+[assembly: AssemblyCompany(BuildInfo.Company)]
+[assembly: AssemblyProduct(BuildInfo.Product)]
+[assembly: AssemblyCopyright(BuildInfo.Copyright)]
+[assembly: AssemblyTrademark(BuildInfo.Trademark)]
+[assembly: AssemblyCulture(BuildInfo.Culture)]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: MelonInfo(typeof(QoLFireStart.QoLFireStartMain), "QoLFireStart", "1.0.0", "Danileros")]
+[assembly: AssemblyVersion(BuildInfo.Version)]
+[assembly: AssemblyFileVersion(BuildInfo.Version)]
+
+[assembly: MelonInfo(typeof(QoLFireStart.QoLFireStartMain), BuildInfo.Name, BuildInfo.Version, BuildInfo.Author, BuildInfo.DownloadLink)]
 [assembly: MelonGame("Hinterland", "TheLongDark")]
 
+[assembly: VerifyLoaderVersion(BuildInfo.MelonLoaderVersion, true)]
+[assembly: MelonPriority(BuildInfo.Priority)]
+[assembly: MelonIncompatibleAssemblies(null)]

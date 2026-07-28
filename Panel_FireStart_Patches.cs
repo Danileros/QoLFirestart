@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Il2Cpp;
-using Il2CppSystem.Collections.Generic;
 
 namespace QoLFireStart;
 
 internal class Panel_FireStart_Patches
 {
-    delegate int CompareFunc(GearItem a, GearItem b);
-
     [HarmonyPatch(typeof(Panel_FireStart), "Enable")]
     internal class Panel_FireStart_Update
     {
@@ -22,6 +17,7 @@ internal class Panel_FireStart_Patches
             "GEAR_FlareA",
             "GEAR_BlueFlare",
             "GEAR_MagnifyingLens",
+            "GEAR_ActiveEmberBox", // Fire Pack DLC compatibility
         };
 
         // Exclude items that can be used another way
@@ -56,10 +52,10 @@ internal class Panel_FireStart_Patches
             }
         }
         
-        private static void LogOrder(List<GearItem> gearList, Comparison<GearItem> comparison)
+        // Debug only
+        private static void LogOrder(Il2CppSystem.Collections.Generic.List<GearItem> gearList, Comparison<GearItem> comparison)
         {
-#if DEBUG
-            var list = new System.Collections.Generic.List<GearItem>();
+            var list = new List<GearItem>();
             for (var i = 0; i < gearList.Count; i++)
             {
                 list.Add(gearList[i]);
@@ -84,7 +80,7 @@ internal class Panel_FireStart_Patches
                 
                 var weight = (gear.WeightKG.m_Units / 1000000f).ToString("N0");
                 var fuelDuration = gear.m_FuelSourceItem?.m_BurnDurationHours.ToString("N2");
-                var fuelQuality = (gear.m_FuelSourceItem?.m_BurnDurationHours ?? 0) / (gear.WeightKG.m_Units/ 1000000000f);
+                var fuelQuality = (gear.m_FuelSourceItem?.m_BurnDurationHours ?? 0) / (gear.WeightKG.m_Units / 1000000000f);
                 
                 var condition = gear.CurrentHP;
                 
@@ -93,10 +89,9 @@ internal class Panel_FireStart_Patches
             }
             
             MelonLoader.MelonLogger.Msg($"");
-#endif
         }
 
-        private static int SelectBest(List<GearItem> list, int startIndex,
+        private static int SelectBest(Il2CppSystem.Collections.Generic.List<GearItem> list, int startIndex,
             Comparison<GearItem> comparison)
         {
             var index = startIndex;
@@ -121,11 +116,16 @@ internal class Panel_FireStart_Patches
 
         private static int ComparisonFirestarter(GearItem a, GearItem b)
         {
+            // Fire start chance
             var aFireChance = (int)a.m_FireStarterItem.m_FireStartSkillModifier;
+            // Fire start duration. Lower = better
             var aFireTime = -(int)a.m_FireStarterItem.m_FireStartDurationModifier;
+            // Is available (only Magnifying Lens for now)
             var aAvailable = (a.m_FireStarterItem == null || !a.m_FireStarterItem.m_RequiresSunLight ||
                               _instance.HasDirectSunlight()) ? 1 : 0;
+            // Is in favorites list ('free' fire source)
             var aFavor = BestStarters.Contains(a.name) ? 1 : 0;
+            
             var bFireChance = (int)b.m_FireStarterItem.m_FireStartSkillModifier;
             var bFireTime = -(int)b.m_FireStarterItem.m_FireStartDurationModifier;
             var bAvailable = (b.m_FireStarterItem == null || !b.m_FireStarterItem.m_RequiresSunLight ||
@@ -149,6 +149,7 @@ internal class Panel_FireStart_Patches
                 return 1;
             }
             
+            // Sort by reversed name so Tinder would be first in list. Just to make stable output
             var nameDiff = 0;
             var i = 0;
             while (i < a.name.Length && i < b.name.Length && Math.Abs(nameDiff) < 100000)
@@ -157,14 +158,17 @@ internal class Panel_FireStart_Patches
                 ++i;
             }
             
+            // Sort out tinder with several usages (birchbark)
             var aWorst = WorstTinders.Contains(a.name) ? 1 : 0;
             var bWorst = WorstTinders.Contains(b.name) ? 1 : 0;
 
+            // Get weight
             var aWeigth = (int)a.WeightKG.m_Units;
             var bWeigth = (int)b.WeightKG.m_Units;
             
             return (aWorst - bWorst) * 1000000000       // Sort out birchbark
-                   + (aWeigth - bWeigth) + nameDiff;    // Then prefer lowest weight (tinder over paper)
+                   + (aWeigth - bWeigth)                // Then prefer lowest weight (tinder over paper)
+                   + nameDiff;                          // Then by name
         }
 
         private static int ComparisonFuel(GearItem a, GearItem b)
@@ -179,6 +183,7 @@ internal class Panel_FireStart_Patches
                 return 1;
             }
             
+            // Check if it is incomplete research book
             var aIncomplete = (a.m_ResearchItem != null && !a.m_ResearchItem.IsResearchComplete());
             var bIncomplete = (b.m_ResearchItem != null && !b.m_ResearchItem.IsResearchComplete());
             if (aIncomplete != bIncomplete)
@@ -186,10 +191,15 @@ internal class Panel_FireStart_Patches
                 return aIncomplete ? 1 : -1;
             }
 
+            // fire start chance
             var aChance = (int)a.m_FuelSourceItem.m_FireStartSkillModifier;
+            // Fire start duration. Lower = better
             var aTime = -(int)a.m_FuelSourceItem.m_FireStartDurationModifier;
+            // Burn hours / weight. To prefer start with worst weight ratio 
             var aRatio = (int)(10 * a.m_FuelSourceItem.m_BurnDurationHours / (a.WeightKG.m_Units/ 1000000000f));
+            // Sort out fuel with several usages (torches)
             var aWorst = WorstFuels.Contains(a.name) ? 1 : 0;
+            // Select worst torch
             var aCondition = (int)a.CurrentHP;
             
             var bChance = (int)b.m_FuelSourceItem.m_FireStartSkillModifier;

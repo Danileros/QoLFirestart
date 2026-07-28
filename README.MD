@@ -39,6 +39,7 @@ No setting for now implemented. May change if requested.
 ## Compatibility
 
 * Compatible with Improved Magnifying Lens.
+* Compatible with Fire Pack DLC.
 
 ## Installation
 

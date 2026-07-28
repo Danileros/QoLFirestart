@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6</TargetFramework>
-        <LangVersion>10</LangVersion>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>Latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <RootNamespace>FireStartQoL</RootNamespace>
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -59,8 +59,10 @@
         <Reference Include="UnityEngine.Il2CppAssetBundleManager" />
         <Reference Include="UnityEngine.Il2CppImageConversionManager" />
     </ItemGroup>
-    
+
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Debug\net6\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
+        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Debug\net6.0\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
+        <Exec Command="if not exist &quot;$(SolutionDir)Release&quot; mkdir &quot;$(SolutionDir)Release&quot;" />
+        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Release\net6.0\$(ProjectName).dll&quot; &quot;$(SolutionDir)Release\$(ProjectName).dll&quot;" />
     </Target>
 </Project>
