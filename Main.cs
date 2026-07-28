@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QoLFireStart;
 
-public class QoLFireStartMain : MelonMod
+public class Main : MelonMod
 {
     public override void OnInitializeMelon()
     {
