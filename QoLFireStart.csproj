@@ -61,8 +61,8 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Debug\net6.0\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
-        <Exec Command="if not exist &quot;$(SolutionDir)Release&quot; mkdir &quot;$(SolutionDir)Release&quot;" />
-        <Exec Command="copy /Y &quot;$(SolutionDir)bin\Release\net6.0\$(ProjectName).dll&quot; &quot;$(SolutionDir)Release\$(ProjectName).dll&quot;" />
+        <Exec Condition="'$(Configuration)'=='Debug'" Command="copy /Y &quot;$(SolutionDir)bin\Debug\net6.0\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
+        <Exec Condition="'$(Configuration)'=='Release'" Command="if not exist &quot;$(SolutionDir)Release&quot; mkdir &quot;$(SolutionDir)Release&quot;" />
+        <Exec Condition="'$(Configuration)'=='Release'" Command="copy /Y &quot;$(SolutionDir)bin\Release\net6.0\$(ProjectName).dll&quot; &quot;$(SolutionDir)Release\$(ProjectName).dll&quot;" />
     </Target>
 </Project>
