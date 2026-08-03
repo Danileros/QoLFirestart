@@ -44,5 +44,5 @@ No setting for now implemented. May change if requested.
 ## Installation
 
 * Common mods installation process is described at [TLD Mods](https://tldmods.net/install.html). Make sure your MelonLoader version matches.
-* Download latest Long Largo version from Releases page.
+* Download latest mod version from Releases page.
 * Drop archive files to Mods folder in The Long Dark game directory.
