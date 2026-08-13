@@ -23,7 +23,7 @@ namespace QoLFireStart
 		public const string Author                          = "Danileros";
 		/// <summary>Current version</summary>
 		/// <value>This should always be <see href="https://semver.org">Semantic Versioning</see></value>
-		public const string Version                         = "1.0.1";
+		public const string Version                         = "1.0.2";
 		/// <summary>Name used on GUI's, like ModSettings</summary>
 		public const string GuiName                         = "QoL FireStart";
 		/// <summary>The minimum Melon Loader version that your mod requires</summary>

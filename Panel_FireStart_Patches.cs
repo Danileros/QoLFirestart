@@ -125,16 +125,20 @@ internal class Panel_FireStart_Patches
                               _instance.HasDirectSunlight()) ? 1 : 0;
             // Is in favorites list ('free' fire source)
             var aFavor = BestStarters.Contains(a.name) ? 1 : 0;
+            // Select worst firestriker
+            var aCondition = (int)a.CurrentHP;
             
             var bFireChance = (int)b.m_FireStarterItem.m_FireStartSkillModifier;
             var bFireTime = -(int)b.m_FireStarterItem.m_FireStartDurationModifier;
             var bAvailable = (b.m_FireStarterItem == null || !b.m_FireStarterItem.m_RequiresSunLight ||
                               _instance.HasDirectSunlight()) ? 1 : 0;
             var bFavor = BestStarters.Contains(b.name) ? 1 : 0;
-            return (bAvailable - aAvailable) * 100000   // Sort out Magnifying lens when it is unavailable
-                   + (bFavor - aFavor) * 10000          // Prefer 'free' starters
-                   + (bFireChance - aFireChance) * 100  // Then prefer highest chance
-                   + (bFireTime - aFireTime);           // Then prefer shortest start (torch better than magnifying lens)
+            var bCondition = (int)b.CurrentHP;
+            return (bAvailable - aAvailable) * 10000000   // Sort out Magnifying lens when it is unavailable
+                   + (bFavor - aFavor) * 1000000          // Prefer 'free' starters
+                   + (bFireChance - aFireChance) * 10000  // Then prefer highest chance
+                   + (bFireTime - aFireTime) * 100        // Then prefer shortest start (torch better than magnifying lens)
+                   + (aCondition - bCondition);           // Then by condition (firestriker)
         }
 
         private static int ComparisonTinder(GearItem a, GearItem b)
