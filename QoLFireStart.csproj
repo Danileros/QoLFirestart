@@ -58,6 +58,12 @@
         <Reference Include="UnityEngine.Il2CppImageConversionManager" />
     </ItemGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+    </PropertyGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="copy /Y &quot;$(ProjectDir)bin\Debug\net6.0\$(ProjectName).dll&quot; &quot;$(ModsPath)\$(ProjectName).dll&quot;" />
 
