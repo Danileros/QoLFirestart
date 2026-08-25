@@ -111,6 +111,12 @@ public class FireStartManager
                     return SelectBest(list, startIndex, comparison);
                 }
             }
+
+            if (gear.name == "GEAR_PackMatches")
+            {
+                // Not interloper
+                return SelectBest(list, startIndex, comparison);
+            }
         }
 
         if (firestrikerGear == null || !CanBreak(firestrikerGear))
