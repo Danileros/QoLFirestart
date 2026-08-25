@@ -14,6 +14,7 @@ The UI in **The Long Dark** are notorious for being clunky. This is particularly
 3. Firestriker.
 4. Wood matches.
 5. Pack matches.
+6. Last charge of last firestriker (for Interloper).
 
 #### Tinders:
 1. Any unbreakable tinder.
