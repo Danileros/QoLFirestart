@@ -23,7 +23,7 @@ namespace QoLFireStart
 		public const string Author                          = "Danileros";
 		/// <summary>Current version</summary>
 		/// <value>This should always be <see href="https://semver.org">Semantic Versioning</see></value>
-		public const string Version                         = "1.1.0";
+		public const string Version                         = "1.1.1";
 		/// <summary>Name used on GUI's, like ModSettings</summary>
 		public const string GuiName                         = "QoL FireStart";
 		/// <summary>The minimum Melon Loader version that your mod requires</summary>
@@ -61,7 +61,9 @@ namespace QoLFireStart
 		/// <summary>Culture info</summary>
 		public const string Culture                         = null;
 		/// <summary>Priority of your mod. Most of the time you should not need to change this</summary>
-		public const int Priority                           = 0;
+		// the higher it is, the later it is getting loaded
+		// And we need our mod to be the last at list of Panel_FireStart.Enable
+		public const int Priority                           = 1;
 		#endregion
 	}
 }
